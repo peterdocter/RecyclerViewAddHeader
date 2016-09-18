@@ -67,11 +67,21 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_HEADER) {
             return;
         }
         ((Holder) holder).text.setText(mDatas.get(getRealPosition(holder)));
+        // 如果设置了回调，则设置点击事件
+        if (mOnItemClickLitener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickLitener.onItemClick(holder.itemView, pos);
+                }
+            });
+        }
     }
 
     @Override
@@ -82,6 +92,16 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter {
     public int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
         return mHeaderView == null ? position : position - 1;
+    }
+
+    public interface OnItemClickLitener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickLitener mOnItemClickLitener;
+
+    public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
+        this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
     class Holder extends RecyclerView.ViewHolder {

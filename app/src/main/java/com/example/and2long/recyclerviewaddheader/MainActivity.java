@@ -1,5 +1,6 @@
 package com.example.and2long.recyclerviewaddheader;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -47,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new BaseRecyclerViewAdapter();
         adapter.setHeaderView(header);
         adapter.addData(data1);
+        adapter.setOnItemClickLitener(new BaseRecyclerViewAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Snackbar.make(mRecyclerView, data1.get(position - 1), Snackbar.LENGTH_SHORT).show();
+            }
+        });
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -72,11 +79,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_data1:
                 adapter.addData(data1);
+                adapter.setOnItemClickLitener(new BaseRecyclerViewAdapter.OnItemClickLitener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Snackbar.make(mRecyclerView, data1.get(position - 1), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
                 adapter.notifyDataSetChanged();
+                //mRecyclerView.setAdapter(adapter);
                 break;
             case R.id.btn_data2:
                 adapter.addData(data2);
+                adapter.setOnItemClickLitener(new BaseRecyclerViewAdapter.OnItemClickLitener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Snackbar.make(mRecyclerView, data2.get(position - 1), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
                 adapter.notifyDataSetChanged();
+                //mRecyclerView.setAdapter(adapter);
                 break;
         }
     }
